@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Bookstore - Your Next Great Read</title>
+    
+    <style>
+        /* --- 1. Global & Theme Styles --- */
+        :root {
+            --primary-color: #FF6600; /* Aesthetic Orange */
+            --light-bg: #f9f9f9;      /* Off-white background */
+            --dark-text: #111111;     /* Black text */
+            --card-bg: #ffffff;       /* Pure white for cards */
+            
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --shadow-hover-color: rgba(0, 0, 0, 0.15);
+            --bloom-color: rgba(255, 102, 0, 0.6); /* Orange glow for the bloom */
+
+            --bg-gradient-start: #ffffff; 
+            --bg-gradient-mid: #f0f0f0;   
+            --bg-gradient-end: #ffffff;   
+
+            --section-hover-start: rgba(255, 102, 0, 0.05); 
+            --section-hover-end: rgba(255, 102, 0, 0);      
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            color: var(--dark-text);
+            line-height: 1.6;
+
+            /* Base layer gradient animation */
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
+            background-size: 200% 200%; 
+            animation: gradientShift 15s ease infinite; 
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- 2. Animated Background Shapes Effect --- */
+        .background-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .background-shapes li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 102, 0, 0.2);
+            animation: animateShapes 25s linear infinite;
+            bottom: -150px; 
+            border-radius: 50%;
+        }
+
+        .background-shapes li:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .background-shapes li:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .background-shapes li:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+        .background-shapes li:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+        .background-shapes li:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+        .background-shapes li:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
+        .background-shapes li:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
+        .background-shapes li:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
+        .background-shapes li:nth-child(9) { left: 20%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; }
+        .background-shapes li:nth-child(10) { left: 85%; width: 150px; height: 150px; animation-delay: 0s; animation-duration: 11s; }
+
+        @keyframes animateShapes {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* --- 3. Header & Footer --- */
+        .site-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px var(--shadow-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .site-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+        }
+
+        .site-header p {
+            margin: 0.25rem 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .site-footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #777;
+            border-top: 1px solid #ddd;
+            position: relative;
+            z-index: 1;
+            background-color: var(--light-bg);
+        }
+
+        /* --- 4. Main Content & Sections --- */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            margin-bottom: 3rem;
+            padding: 1rem;
+            border-radius: 8px;
+            
+            opacity: 0; 
+            transform: translateY(20px); 
+            animation: fadeIn 0.8s ease-out forwards; 
+            
+            background: none; 
+            transition: background 0.3s ease-out; 
+        }
+
+        .content-section:nth-child(1) { animation-delay: 0.2s; }
+        .content-section:nth-child(2) { animation-delay: 0.4s; }
+        .content-section:nth-child(3) { animation-delay: 0.6s; }
+        .content-section:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-section:hover {
+            background: linear-gradient(to right, var(--section-hover-start), var(--section-hover-end));
+        }
+
+        .content-section h2 {
+            font-size: 2rem;
+            color: var(--dark-text);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-section h3 {
+            font-size: 1.5rem;
+            color: var(--dark-text);
+            margin-top: 2rem;
+            margin-bottom: 1.2rem;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 0.75rem;
+            opacity: 0.9;
+        }
+        .content-section h3:first-of-type {
+            margin-top: 0.5rem;
+        }
+
+
+        .section-icon {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            filter: invert(44%) sepia(99%) saturate(2359%) hue-rotate(0deg) brightness(103%) contrast(103%);
+        }
+
+        /* --- 5. Responsive Card Grid --- */
+        .listing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* --- 6. Card Styling & Interactions --- */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            
+            transform: translateZ(0); /* The Hover Flicker Fix */
+
+            transition: box-shadow 0.3s ease-out, transform 0.3s ease-out;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            min-height: 40px;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            color: var(--primary-color);
+            flex-grow: 1;
+            font-size: 1.25rem;
+            border: none;
+            padding: 0;
+            opacity: 1;
+        }
+
+        .card-image {
+            width: 40px;
+            height: 40px;
+            margin-right: 12px;
+            object-fit: contain;
+            filter: invert(44%) sepia(99%) saturate(2359%) hue-rotate(0deg) brightness(103%) contrast(103%);
+        }
+
+        /* --- NEW Book Card Content Styles --- */
+        .card .book-author {
+            margin: 0.5rem 0 0.25rem;
+            font-size: 1rem;
+            color: #444;
+            font-weight: 500;
+            flex-grow: 0; /* Author doesn't grow */
+        }
+
+        .card .book-description {
+            margin: 0.25rem 0;
+            font-size: 0.95rem;
+            color: #555;
+            flex-grow: 1; /* Description fills space */
+        }
+        
+        .card .book-details {
+            font-style: italic;
+            color: #777;
+            font-size: 0.9rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #eee;
+            margin-top: 1rem;
+            flex-grow: 0; /* Details stay at bottom */
+        }
+        /* --- END NEW Styles --- */
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--shadow-hover-color), 0 0 25px var(--bloom-color);
+        }
+        
+        .card:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 5px var(--shadow-color), 0 0 10px var(--bloom-color);
+            transition: box-shadow 0.1s ease-out, transform 0.1s ease-out;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <ul class="background-shapes">
+        <li></li><li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li><li></li>
+    </ul>
+
+    <svg width="0" height="0" style="position:absolute; display:none;">
+        <defs>
+            <symbol id="icon-book" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M18 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-2 16H8v-2h8v2m-8-4v-2h8v2H8m8-4H8V9h8v2H8V7h8v2Z"/>
+            </symbol>
+            <symbol id="icon-bookshelf" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM4 4h4v16H4V4zm6 16V4h4v16h-4zm6 0V4h4v16h-4z"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <header class="site-header">
+        <h1>Online Bookstore</h1>
+        <p>Discover Your Next Great Read</p>
+    </header>
+
+    <main>
+
+        <section class="content-section">
+            <h2>
+                <svg class="section-icon" aria-hidden="true"><use xlink:href="#icon-bookshelf"></use></svg>
+                Fiction Bestsellers
+            </h2>
+            <div class="listing-grid">
+                
+                <div class="card">
+                    <div class="card-header">
+                        <svg class="card-image" aria-hidden="true"><use xlink:href="#icon-book"></use></svg>
+                        <h3>The Midnight Library</h3>
+                    </div>
+                    <p class="book-author">by Matt Haig</p>
+                    <p class="book-description">A novel about Nora Seed, who finds herself in a library between life and death with the chance to try alternative lives.</p>
+                    <p class="book-details">⭐ 4.5/5 | Contemporary Fiction</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <svg class="card-image" aria-hidden="true"><use xlink:href="#icon-book"></use></svg>
+                        <h3>Dune</h3>
+                    </div>
+                    <p class="book-author">by Frank Herbert</p>
+                    <p class="book-description">A sweeping epic set on the desert planet Arrakis, following Paul Atreides as his family battles for control of the 'spice'.</p>
+                    <p class="book-details">⭐ 4.8/5 | Classic Sci-Fi</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <svg class="card-image" aria-hidden="true"><use xlink:href="#icon-book"></use></svg>
+                        <h3>The Silent Patient</h3>
+                    </div>
+                    <p class="book-author">by Alex Michaelides</p>
+                    <p class="book-description">A shocking psychological thriller of a woman's act of violence against her husband—and her refusal to speak a word after.</p>
+                    <p class="book-details">⭐ 4.6/5 | Thriller</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>
+                <svg class="section-icon" aria-hidden="true"><use xlink:href="#icon-bookshelf"></use></svg>
+                Science Fiction & Fantasy
+            </h2>
+            <div class="listing-grid">
+
+                <div class="card">
+                    <div class="card-header">
+                        <svg class="card-image" aria-hidden="true"><use xlink:href="#icon-book"></use></svg>
+                        <h3>Project Hail Mary</h3>
+                    </div>
+                    <p class="book-author">by Andy Weir</p>
+                    <p class="book-description">An astronaut, the sole survivor on a desperate, last-chance mission, must save Earth from disaster.</p>
+                    <p class="book-details">⭐ 4.7/5 | Science Fiction</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <svg class="card-image" aria-hidden="true"><use xlink:href="#icon-book"></use></svg>
+                        <h3>The Name of the Wind</h3>
+                    </div>
+                    <p class="book-author">by Patrick Rothfuss</p>
+                    <p class="book-description">The story of Kvothe, a magically gifted young man, who grows to be the most notorious wizard his world has ever seen.</p>
+                    <p class="book-details">⭐ 4.9/5 | High Fantasy</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <svg class="card-image" aria-hidden="true"><use xlink:href="#icon-book"></use></svg>
+                        <h3>Neuromancer</h3>
+                    </div>
+                    <p class="book-author">by William Gibson</p>
+                    <p class="book-description">The definitive cyberpunk novel. A washed-up computer hacker is hired for one last job, a journey into cyberspace.</p>
+                    <p class="book-details">⭐ 4.6/5 | Cyberpunk</p>
+                </div>
+                
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>
+                <svg class="section-icon" aria-hidden="true"><use xlink:href="#icon-bookshelf"></use></svg>
+                Mystery & Thriller
+            </h2>
+            <div class="listing-grid">
+
+                <div class="card">
+                    <div class="card-header">
+                        <svg class="card-image" aria-hidden="true"><use xlink:href="#icon-book"></use></svg>
+                        <h3>Gone Girl</h3>
+                    </div>
+                    <p class="book-author">by Gillian Flynn</p>
+                    <p class="book-description">On the day of her fifth wedding anniversary, Amy Dunne disappears, leaving her husband, Nick, as the primary suspect.</p>
+                    <p class="book-details">⭐ 4.5/5 | Psychological Thriller</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <svg class="card-image" aria-hidden="true"><use xlink:href="#icon-book"></use></svg>
+                        <h3>The Hound of the Baskervilles</h3>
+                    </div>
+                    <p class="book-author">by Arthur Conan Doyle</p>
+                    <p class="book-description">Sherlock Holmes and Dr. Watson investigate the legend of a terrifying, supernatural hound on the moors of Devonshire.</p>
+                    <p class="book-details">⭐ 4.8/5 | Classic Mystery</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <svg class="card-image" aria-hidden="true"><use xlink:href="#icon-book"></use></svg>
+                        <h3>The Girl with the Dragon Tattoo</h3>
+                    </div>
+                    <p class="book-author">by Stieg Larsson</p>
+                    <p class="book-description">A disgraced journalist and a troubled young hacker uncover a dark web of family secrets and murder.</p>
+                    <p class="book-details">⭐ 4.7/5 | Scandinavian Noir</p>
+                </div>
+                
+            </div>
+        </section>
+        
+        <section class="content-section">
+            <h2>
+                <svg class="section-icon" aria-hidden="true"><use xlink:href="#icon-bookshelf"></use></svg>
+                Non-Fiction & Biography
+            </h2>
+            
+            <div class="listing-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <svg class="card-image" aria-hidden="true"><use xlink:href="#icon-book"></use></svg>
+                        <h3>Sapiens: A Brief History of Humankind</h3>
+                    </div>
+                    <p class="book-author">by Yuval Noah Harari</p>
+                    <p class="book-description">A sweeping overview of the history of our species, from the Stone Age to the present day.</p>
+                    <p class="book-details">⭐ 4.8/5 | History</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <svg class="card-image" aria-hidden="true"><use xlink:href="#icon-book"></use></svg>
+                        <h3>Educated: A Memoir</h3>
+                    </div>
+                    <p class="book-author">by Tara Westover</p>
+                    <p class="book-description">The unforgettable memoir of a young woman's journey from a survivalist family in Idaho to the halls of Cambridge University.</p>
+                    <p class="book-details">⭐ 4.7/5 | Biography</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <svg class="card-image" aria-hidden="true"><use xlink:href="#icon-book"></use></svg>
+                        <h3>Atomic Habits</h3>
+                    </div>
+                    <p class="book-author">by James Clear</p>
+                    <p class="book-description">An easy and proven way to build good habits and break bad ones, based on a four-step model.</p>
+                    <p class="book-details">⭐ 4.9/5 | Self-Help</p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <p>© 2025 Online Bookstore - All Rights Reserved</p>
+        <p>Your one-stop shop for all the books you love.</p>
+        <p>Note: This Website is made for Educational Purpose Only</p>   
+    </footer>
+
+</body>
+</html>
